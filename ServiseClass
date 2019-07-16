@@ -1,0 +1,40 @@
+//
+//  ServiseClass.swift
+//  PractiseTest
+//
+//  Created by Apple on 15/07/19.
+//  Copyright © 2019 Apple. All rights reserved.
+//
+
+import Foundation
+import Alamofire
+import ObjectMapper
+
+private struct Constant {
+    static let displayList = "https://itunes.apple.com/search?term=jack+johnson"
+}
+
+
+protocol displayListDelegate: class {
+    func didGetDisplayList(musicList: Array<Music>)
+}
+
+class ServiseClass {
+    weak var displayListDelegate : displayListDelegate?
+
+    func fetchData() {
+        let req = Alamofire.request(Constant.displayList, method: .get, parameters: nil, encoding: URLEncoding.default, headers: nil).validate().responseJSON { (response) in
+            switch response.result {
+            case .success:
+                if let dict = response.result.value as? Dictionary<String,Any>,
+                    let resultArray = Mapper<Music>().mapArray(JSONObject:dict ["results"]) {
+                    self.displayListDelegate?.didGetDisplayList(musicList: resultArray)
+                }
+                break
+            case .failure(_):
+                break
+            }
+        }
+        print(req.debugDescription)
+    }
+}
