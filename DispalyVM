@@ -1,0 +1,42 @@
+//
+//  DisplayVM.swift
+//  PractiseTest
+//
+//  Created by Apple on 15/07/19.
+//  Copyright © 2019 Apple. All rights reserved.
+//
+
+import Foundation
+
+class DispalyVM {
+
+    fileprivate weak var displayVc: DisplayDataVC!
+    fileprivate var serviseClass = ServiseClass()
+    fileprivate var arrayList = Array<Music>()
+
+    init(displayVc: DisplayDataVC) {
+        self.displayVc = displayVc
+        serviseClass.displayListDelegate = self
+        serviseClass.fetchData()
+    }
+
+    func numberOfSection() -> Int {
+        return 1
+    }
+
+    func numberOfRowsInSection() -> Int {
+        return arrayList.count
+    }
+
+    func cellForRowIndexPath(index: Int) -> Music {
+        return arrayList[index]
+    }
+}
+
+extension DispalyVM: displayListDelegate {
+    func didGetDisplayList(musicList: Array<Music>) {
+        self.arrayList = musicList
+        displayVc.tableViewReload()
+    }
+}
+
