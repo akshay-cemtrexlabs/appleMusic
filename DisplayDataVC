@@ -1,0 +1,92 @@
+//
+//  DisplayDataVC.swift
+//  PractiseTest
+//
+//  Created by Apple on 15/07/19.
+//  Copyright © 2019 Apple. All rights reserved.
+//
+
+import UIKit
+
+class DisplayDataVC: UIViewController {
+    fileprivate let tableView = UITableView()
+
+
+    lazy var displayVm: DispalyVM = {
+        return DispalyVM.init(displayVc: self)
+    }()
+
+    override func loadView() {
+        super.loadView()
+        view.backgroundColor = UIColor.white
+        setUpUI()
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+
+    func tableViewReload() {
+        tableView.reloadData()
+    }
+}
+
+extension DisplayDataVC {
+    fileprivate func setUpUI() {
+        setupTableView()
+    }
+
+    private func setupTableView() {
+      view.addSubview(tableView)
+      tableView.translatesAutoresizingMaskIntoConstraints = false
+      tableView.estimatedRowHeight = 200
+      tableView.rowHeight = UITableView.automaticDimension
+      tableView.delegate = self
+      tableView.dataSource = self
+      NSLayoutConstraint.activate(
+         [
+            tableView.topAnchor.constraint(
+                equalTo: view.topAnchor,
+                constant: 0
+            ),
+            tableView.leadingAnchor.constraint(
+                equalTo: view.leadingAnchor,
+                constant: 0
+            ),
+            tableView.trailingAnchor.constraint(
+                equalTo: view.trailingAnchor,
+                constant: 0
+            ),
+            tableView.bottomAnchor.constraint(
+                equalTo: view.bottomAnchor,
+                constant: 0
+            )
+         ]
+      )
+        tableView.register(
+            CustomeTableViewCell.self,
+            forCellReuseIdentifier: "cell"
+        )
+
+    }
+
+}
+
+extension DisplayDataVC: UITableViewDelegate {
+
+}
+
+extension DisplayDataVC: UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return displayVm.numberOfSection()
+    }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return displayVm.numberOfRowsInSection()
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CustomeTableViewCell
+        cell.configureView(listMusic: displayVm.cellForRowIndexPath(index: indexPath.row))
+        return cell
+    }
+}
