@@ -1,0 +1,41 @@
+//
+//  Music.swift
+//  PractiseTest
+//
+//  Created by Apple on 15/07/19.
+//  Copyright © 2019 Apple. All rights reserved.
+//
+import Foundation
+import ObjectMapper
+
+class Music : Mappable {
+
+    var wrapperType: String?
+    var kind: String?
+    var artistId: Int?
+    var artistName: String?
+    var trackName: String?
+    var trackCensoredName: String?
+    var isStreamable: Bool?
+    var collectionViewUrl: String?
+    var collectionName: String?
+    var primaryGenreName: String?
+    var currency: String?
+
+    required convenience init?(map: Map) {
+        self.init()
+    }
+
+    func mapping(map: Map) {
+        wrapperType            <- map["wrapperType"]
+        kind                   <- map["kind"]
+        artistId               <- map["artistId"]
+        artistName             <- map["artistName"]
+        trackName              <- map["trackName"]
+        isStreamable           <- map["isStreamable"]
+        collectionViewUrl      <- map["collectionViewUrl"]
+        primaryGenreName       <- map["primaryGenreName"]
+        currency               <- map["currency"]
+    }
+
+}
